@@ -3,7 +3,7 @@ using workshop.wwwapi.Models;
 
 namespace workshop.wwwapi.Repository
 {
-    public class CarRepository : ICarRepository
+    public class Repository : IRepository
     {
         /// <summary>
         /// Get all cars from the DataStore
@@ -21,6 +21,7 @@ namespace workshop.wwwapi.Repository
         /// <returns></returns>
         public bool AddCar(Car car)
         {
+            
             if(car!=null)
             {
                 int id = CarDataStore.Cars.Count== 0 ? 1 : CarDataStore.Cars.Max(x => x.Id) + 1;
@@ -36,9 +37,9 @@ namespace workshop.wwwapi.Repository
         /// </summary>
         /// <param name="id">id of car to delete</param>
         /// <returns></returns>
-        public bool DeleteCar(int id)
+        public bool DeleteCar(int id, out Car? car)
         {
-            var car = CarDataStore.Cars.FirstOrDefault(x => x.Id == id);
+            car = CarDataStore.Cars.FirstOrDefault(x => x.Id == id);
             return CarDataStore.Cars.Remove(car);
         }
 
@@ -48,14 +49,14 @@ namespace workshop.wwwapi.Repository
         /// <param name="id">id of car to find</param>
         /// <param name="car">out param of Car found</param>
         /// <returns></returns>
-        public bool GetCar(int id, out Car? car)
+        public Car GetCar(int id)
         {
-            car = CarDataStore.Cars.FirstOrDefault(c => c.Id == id);
+            var car = CarDataStore.Cars.FirstOrDefault(c => c.Id == id);
             if(car!=null)
             {
-                return true;
+                return car;
             }
-            return false;
+            return car;
         }
     }
 }

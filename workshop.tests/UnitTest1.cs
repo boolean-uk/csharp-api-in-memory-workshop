@@ -18,11 +18,13 @@ public class Tests
         Car car = new Car();
         car.Make = "Volkswagen";
         car.Model = "Beetle";
-        CarRepository repository = new CarRepository();
+        Repository repository = new Repository();
 
-        repository.AddCar(car);
+        bool result = repository.AddCar(car);
 
         Assert.IsTrue(repository.GetCars().ToList().Count == 1);
+
+
     }
     [Test]
     public void TestAddCar()
@@ -31,7 +33,7 @@ public class Tests
         Car car = new Car();
         car.Make = "Volkswagen";
         car.Model = "Beetle";
-        CarRepository repository = new CarRepository();
+        Repository repository = new Repository();
 
         repository.AddCar(car);
 
@@ -44,37 +46,40 @@ public class Tests
         Car car = new Car();
         car.Make = "Volkswagen";
         car.Model = "Beetle";
-        CarRepository repository = new CarRepository();
+        Repository repository = new Repository();
 
         repository.AddCar(car);
         Assert.IsTrue(CarDataStore.Cars.Count == 1);
-        bool result = repository.DeleteCar(1);
+        bool result = repository.DeleteCar(1, out Car? deletedCar);
         Assert.IsTrue(CarDataStore.Cars.Count == 0);
         Assert.IsTrue(result);
+        Assert.IsNotNull(deletedCar);
     }
     [Test]
     public void DeleteACarThatIsNotThere()
     {
-        CarRepository repository = new CarRepository();
-        bool result = repository.DeleteCar(1);
+        Repository repository = new Repository();
+        bool result = repository.DeleteCar(1, out Car? car);
         Assert.IsFalse(result);
+        Assert.IsNull(car);
     }
     [Test]
     public void SingleCarTest()
     {
         CarDataStore.Cars.Clear();
-        Car car = new Car();
-        car.Make = "Volkswagen";
-        car.Model = "Beetle";
-        CarRepository repository = new CarRepository();
-        repository.AddCar(car);
+        Car newCar = new Car();
+        newCar.Make = "Volkswagen";
+        newCar.Model = "Beetle";
+        Repository repository = new Repository();
+        repository.AddCar(newCar);
                 
         Assert.IsTrue(CarDataStore.Cars.Count == 1);
 
-        bool result = repository.GetCar(1, out Car carFromDataStore);        
-        Assert.IsTrue(result);
-        Assert.IsTrue(car.Make == carFromDataStore.Make);
-        Assert.IsTrue(car.Model == carFromDataStore.Model);
+        var addedCar = repository.GetCar(1);        
+        Assert.IsTrue(newCar.Make==addedCar.Make);
+        Assert.IsTrue(newCar.Model == addedCar.Model);
+        Assert.IsNotNull(addedCar);
+
 
 
     }

@@ -2,12 +2,12 @@
 
 namespace workshop.wwwapi.Repository
 {
-    public interface ICarRepository
+    public interface IRepository
     {
         IEnumerable<Car> GetCars();
-        bool GetCar(int id, out Car? car);
+        Car GetCar(int id);
         bool AddCar(Car car);
-        bool DeleteCar(int id);
+        bool DeleteCar(int id, out Car deletedCar);
 
     }
 }
